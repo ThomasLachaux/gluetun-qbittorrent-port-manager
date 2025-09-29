@@ -9,7 +9,7 @@ USER app
 
 ENV PORT_FORWARDED=/tmp/gluetun/forwarded_port
 
-COPY ./start.sh ./start.sh
+COPY --chown=app:app ./start.sh ./start.sh
 RUN chmod u+x ./start.sh
 
 CMD ["./start.sh"]
