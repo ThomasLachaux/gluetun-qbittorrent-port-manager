@@ -6,9 +6,9 @@ COOKIES="/tmp/cookies.txt"
 update_port () {
   PORT=$(cat $PORT_FORWARDED)
   rm -f $COOKIES
-  curl -fsS -c $COOKIES --data "username=$QBITTORRENT_USER&password=$QBITTORRENT_PASS" ${QBITTORRENT_ADDRESS}/api/v2/auth/login
-  curl -fsS -b $COOKIES --data 'json={"listen_port": "'"$PORT"'"}' ${QBITTORRENT_ADDRESS}/api/v2/app/setPreferences
-  curl -fsS -b $COOKIES -X POST ${QBITTORRENT_ADDRESS}/api/v2/auth/logout
+  curl -fsS -c $COOKIES --data "username=$QBITTORRENT_USER&password=$QBITTORRENT_PASS" ${QBITTORRENT_SERVER}/api/v2/auth/login
+  curl -fsS -b $COOKIES --data 'json={"listen_port": "'"$PORT"'"}' ${QBITTORRENT_SERVER}/api/v2/app/setPreferences
+  curl -fsS -b $COOKIES -X POST ${QBITTORRENT_SERVER}/api/v2/auth/logout
   rm -f $COOKIES
   echo "Successfully updated qbittorrent to port $PORT"
 }
