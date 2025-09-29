@@ -1,12 +1,14 @@
 #!/bin/bash
+set -eou pipefail
 
 COOKIES="/tmp/cookies.txt"
 
 update_port () {
   PORT=$(cat $PORT_FORWARDED)
   rm -f $COOKIES
-  curl -s -c $COOKIES --data "username=$QBITTORRENT_USER&password=$QBITTORRENT_PASS" ${HTTP_S}://${QBITTORRENT_SERVER}:${QBITTORRENT_PORT}/api/v2/auth/login > /dev/null
-  curl -s -b $COOKIES --data 'json={"listen_port": "'"$PORT"'"}' ${HTTP_S}://${QBITTORRENT_SERVER}:${QBITTORRENT_PORT}/api/v2/app/setPreferences > /dev/null
+  curl -fsS -c $COOKIES --data "username=$QBITTORRENT_USER&password=$QBITTORRENT_PASS" ${HTTP_S}://${QBITTORRENT_SERVER}:${QBITTORRENT_PORT}/api/v2/auth/login
+  curl -fsS -b $COOKIES --data 'json={"listen_port": "'"$PORT"'"}' ${HTTP_S}://${QBITTORRENT_SERVER}:${QBITTORRENT_PORT}/api/v2/app/setPreferences
+  curl -fsS -b $COOKIES -X POST ${HTTP_S}://${QBITTORRENT_SERVER}:${QBITTORRENT_PORT}/api/v2/auth/logout
   rm -f $COOKIES
   echo "Successfully updated qbittorrent to port $PORT"
 }
